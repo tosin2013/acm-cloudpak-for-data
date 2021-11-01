@@ -9,26 +9,6 @@
 *  `clusterid=...`
 > The instructions must be followed in order for proper deployment. 
 
-## Manual Cluster deployment 
-**Clone acm-cloudpak-for-data repo**
-```
-git clone https://github.com/tosin2013/acm-cloudpak-for-data.git
-```
-
-**Login to ACM HUB cluster**
-```
-oc login --token=sha256~XXXXX--server=https://api.ocp4.example.com:6443
-```
-
-**Create namespace for ibm-common-services**
-```
-oc create -f acm-configs/ibm_common_services_namespace.yaml
-```
-
-**Create namespace for cpd-instance**
-```
-oc create -f acm-configs/cpd_instance_namespace.yaml
-```
 
 **Create entitlement key**
 ```
@@ -82,9 +62,30 @@ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
 oc get secrets pull-secret -n openshift-config -o template='{{index .data ".dockerconfigjson"}}' | base64 -d
 ```
 
-**Create Channel for cpd-instance channel**
+## Manual Cluster deployment 
+**Clone acm-cloudpak-for-data repo**
 ```
-oc create -f acm-configs/cpd_instance_channel.yaml
+git clone https://github.com/tosin2013/acm-cloudpak-for-data.git
+```
+
+**Login to ACM HUB cluster**
+```
+oc login --token=sha256~XXXXX--server=https://api.ocp4.example.com:6443
+```
+
+**Create namespace for ibm-common-services**
+```
+oc create -f acm-configs/ibm_common_services_namespace.yaml
+```
+
+**Create namespace for cpd-instance**
+```
+oc create -f acm-configs/cpd_instance_namespace.yaml
+```
+
+**Create Channel for ibm-common-services  channel**
+```
+oc create -f oc create -f acm-configs/ibm_common_services_channel.yaml 
 ```
 
 **Create Application for ibm-common-services application**
