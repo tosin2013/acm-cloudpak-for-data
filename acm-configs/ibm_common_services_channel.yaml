@@ -1,0 +1,8 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: ibm-common-services-channel
+  namespace: ibm-common-services
+spec:
+  pathname: 'https://github.com/tosin2013/acm-cloudpak-for-data.git'
+  type: GitHub

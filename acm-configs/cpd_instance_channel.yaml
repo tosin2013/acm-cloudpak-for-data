@@ -1,0 +1,8 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: cpd-instances-channel
+  namespace: cpd-instance
+spec:
+  pathname: 'https://github.com/tosin2013/acm-cloudpak-for-data.git'
+  type: GitHub
