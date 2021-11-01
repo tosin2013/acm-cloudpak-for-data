@@ -35,7 +35,8 @@ oc create -f acm-configs/cpd_instance_namespace.yaml
 ENTITLEMENT_KEY=$(echo -n "cp:entitlement-key" | base64 -w0)
 ```
 
-**Replace entitlement-key with your entitlement key. For details, see IBM entitlement API key.**
+**Add usernamne and password for cp.icr.io**
+
 ```
 USERINFO=$(echo -n "username:password" | base64 -w0)
 ```
@@ -52,8 +53,8 @@ cat >cloudpack-registry.json<<EOF
          "auth":"${ENTITLEMENT_KEY}",
          "email":"not-used"
       },
-        "myregistry.example.com":{
-         "auth":"b3Blb=",
+        "cp.icr.io":{
+         "auth":"${USERINFO}",
          "email":"not-used"
       }
    }
