@@ -61,3 +61,24 @@ cat >cloudpack-registry.json<<EOF
 }
 EOF
 ```
+
+**Pull the pull-secret.json from cluster**
+```
+oc get secrets pull-secret -n openshift-config -o template='{{index .data ".dockerconfigjson"}}' | base64 -d > pull-secret.json
+```
+
+**Merge pull-secret.json with cloudpack-registry.json**
+```
+jq -c --argjson var "$(jq .auths cloudpack-registry.json)" '.auths += $var' pull-secret.json > merged_pullsecret.json
+```
+
+**Update cluster pull secret**
+```
+oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=merged_pullsecret.json
+```
+
+**Validate Changes**
+```
+oc get secrets pull-secret -n openshift-config -o template='{{index .data ".dockerconfigjson"}}' | base64 -d
+```
+
