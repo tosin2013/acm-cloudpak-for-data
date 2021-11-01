@@ -1,0 +1,16 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: cpd-instance-local-cluster-sub
+  namespace: cpd-instance
+  labels:
+    deployment: cpd-instance-deployment
+  annotations:
+    apps.open-cluster-management.io/github-branch: main
+    apps.open-cluster-management.io/github-path:  clusters/local-cluster/cpd-instance
+spec:
+  channel: cpd-instance/cpd-instance-channel
+  placement: 
+    placementRef: 
+      kind: PlacementRule
+      name: local-cluster

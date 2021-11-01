@@ -1,0 +1,16 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: cpd-instance-cluster1-sub
+  namespace: cpd-instance
+  labels:
+    deployment: cpd-instance-deployment
+  annotations:
+    apps.open-cluster-management.io/github-branch: main
+    apps.open-cluster-management.io/github-path: clusters/cluster1/cpd-instance
+spec:
+  channel:  cpd-instance/cpd-instance-channel
+  placement: 
+    placementRef: 
+      kind: PlacementRule
+      name: cluster1

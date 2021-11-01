@@ -1,0 +1,15 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: cpd-instance-deployment
+  namespace: cpd-instance
+spec:
+  selector:
+    matchExpressions:
+      - key: deployment  
+        operator: In
+        values:
+        - cpd-instance-deployment
+  componentKinds:
+  - group: app.ibm.com/v1alpha1
+    kind: Subscription
