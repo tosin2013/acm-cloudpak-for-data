@@ -82,3 +82,34 @@ oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
 oc get secrets pull-secret -n openshift-config -o template='{{index .data ".dockerconfigjson"}}' | base64 -d
 ```
 
+**Create Channel for cpd-instance channel**
+```
+oc create -f acm-configs/cpd_instance_channel.yaml
+```
+
+**Create Application for ibm-common-services application**
+```
+oc create -f acm-configs/ibm_common_services_application.yaml
+```
+
+### Apply configuration for local-cluster (ACM Hub)
+**Create Placement rule for  cpd-operator Operator**
+```
+oc create -f acm-configs/ibm_common_services_placement_local_cluster.yaml
+```
+
+**Deploy cpd-operator Subscription for local-cluster**
+```
+oc create -f acm-configs/ibm_common_services_subscription_local_cluster.yaml
+```
+
+### Apply cluster1 configuration
+**Create Placement rule for  cpd-operator Operator**
+```
+oc create -f acm-configs/ibm_common_services_placement_cluster1.yaml
+```
+
+**Deploy cpd-operator Subscription for cluster**
+```
+oc create -f acm-configs/ibm_common_services_subscription_cluster1.yaml
+```
