@@ -10,7 +10,7 @@
 > The instructions must be followed in order for proper deployment. 
 
 ## Manual Cluster deployment 
-**Clone event-emitter-kafka repo**
+**Clone acm-cloudpak-for-data repo**
 ```
 git clone https://github.com/tosin2013/acm-cloudpak-for-data.git
 ```
