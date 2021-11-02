@@ -18,7 +18,6 @@ then
     oc  $ACTION -f acm-policies/01_ibm_operator_catalog_must_exists.yaml
     echo "Deploy ibm-common-services"
     oc $ACTION  -f acm-configs/ibm_common_services_namespace.yaml
-    oc $ACTION  -f acm-configs/cpd_instance_namespace.yaml
     oc $ACTION -f acm-configs/ibm_common_services_channel.yaml 
     oc $ACTION  -f acm-configs/ibm_common_services_application.yaml
     echo "Apply configuration for local-cluster (ACM Hub)"
@@ -31,7 +30,6 @@ then
     oc $ACTION -f acm-configs/ibm_common_services_placement_local_cluster.yaml
     oc $ACTION -f acm-configs/ibm_common_services_channel.yaml 
     oc $ACTION -f acm-configs/ibm_common_services_application.yaml
-    oc $ACTION -f acm-configs/cpd_instance_namespace.yaml
     oc $ACTION CustomResourceDefinition $(oc get CustomResourceDefinition | grep ibm | awk '{print $1}') --wait=true --timeout=5s
     oc $ACTION -f acm-configs/ibm_common_services_namespace.yaml
     oc $ACTION -f acm-policies/01_ibm_operator_catalog_must_exists.yaml
