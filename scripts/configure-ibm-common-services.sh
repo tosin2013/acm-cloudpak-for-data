@@ -1,6 +1,7 @@
 #!/bin/bash 
 set -x 
 
+
 if [ -z $1 ];
 then
   echo "Please pass action"
@@ -18,6 +19,7 @@ then
     echo "Deploy ibm-common-services"
     oc $ACTION  -f acm-configs/ibm_common_services_namespace.yaml
     oc $ACTION  -f acm-configs/cpd_instance_namespace.yaml
+    oc $ACTION -f acm-configs/ibm_common_services_channel.yaml 
     oc $ACTION  -f acm-configs/ibm_common_services_application.yaml
     echo "Apply configuration for local-cluster (ACM Hub)"
     oc $ACTION -f acm-configs/ibm_common_services_placement_local_cluster.yaml
@@ -27,6 +29,7 @@ then
     echo "Clean ibm-common-services"
     oc $ACTION  -f acm-configs/ibm_common_services_subscription_local_cluster.yaml
     oc $ACTION -f acm-configs/ibm_common_services_placement_local_cluster.yaml
+    oc $ACTION -f acm-configs/ibm_common_services_channel.yaml 
     oc $ACTION -f acm-configs/ibm_common_services_application.yaml
     oc $ACTION -f acm-configs/cpd_instance_namespace.yaml
     oc $ACTION CustomResourceDefinition $(oc get CustomResourceDefinition | grep ibm | awk '{print $1}') --wait=true --timeout=5s
