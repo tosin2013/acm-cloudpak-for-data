@@ -1,0 +1,72 @@
+
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: ibm-operator-catalog-enforce
+  namespace: acm-policies
+  annotations:
+    policy.open-cluster-management.io/standards: 
+    policy.open-cluster-management.io/categories: 
+    policy.open-cluster-management.io/controls: 
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: ibm-operator-catalog-enforce-prod
+        spec:
+          remediationAction: enforce
+          severity: high
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["openshift-marketplace"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: CatalogSource
+                apiVersion: operators.coreos.com/v1alpha1
+                metadata:
+                  name: ibm-operator-catalog
+                  namespace: openshift-marketplace
+                spec:
+                  displayName: "IBM Operator Catalog" 
+                  publisher: IBM
+                  sourceType: grpc
+                  image: icr.io/cpopen/ibm-operator-catalog:latest
+                  updateStrategy:
+                    registryPoll:
+                      interval: 45m
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-ibm-operator-catalog-enforce
+  namespace: acm-policies
+placementRef:
+  name: placement-ibm-operator-catalog-enforce
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: ibm-operator-catalog-enforce
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-ibm-operator-catalog-enforce
+  namespace: acm-policies
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+
