@@ -35,7 +35,7 @@ oc create -f acm-configs/cpd_instance_namespace.yaml
 
 **Create Channel for ibm-common-services  channel**
 ```
-oc create -f oc create -f acm-configs/ibm_common_services_channel.yaml 
+oc create -f acm-configs/ibm_common_services_channel.yaml 
 ```
 
 **Create Application for ibm-common-services application**
@@ -56,20 +56,20 @@ oc create -f acm-configs/ibm_common_services_subscription_local_cluster.yaml
 
 **Check Deployment status**
 ```
-oc get csv -n operator-project cpd-platform-operator.v2.0.4 \
+oc get csv -n ibm-common-services cpd-platform-operator.v2.0.4 \
 -o jsonpath='{ .status.phase } : { .status.message} {"\n"}'
 ```
 
 **Run the following command to confirm that the operator is ready:**
 ```
-oc get deployments -n operator-project -l olm.owner="cpd-platform-operator.v2.0.4" \
+oc get deployments -n ibm-common-services -l olm.owner="cpd-platform-operator.v2.0.4" \
 -o jsonpath="{.items[0].status.availableReplicas} {'\n'}"
 ```
 
 **Configure cpd-instance**
 **Create Channel for cpd-instance channel**
 ```
-oc create -f oc create -f acm-configs/cpd_instance_channel.yaml
+oc create -f acm-configs/cpd_instance_channel.yaml
 ```
 
 **Create Application for cpd-instance application**
