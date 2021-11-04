@@ -1,0 +1,10 @@
+- name: Remove ibm-common-services namespace
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: v1
+    kind: Namespace
+    name: ibm-common-services
+    state: absent
+  tags: uninstall 

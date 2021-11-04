@@ -1,0 +1,98 @@
+- name: Remove ibm-common-services Subscription local-cluster
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: apps.open-cluster-management.io/v1
+    kind: Subscription
+    name: ibm-common-services-local-cluster-sub
+    state: absent
+  tags: 
+    - uninstall 
+    - local-cluster
+- name: Remove ibm-common-services PlacementRule local-cluster
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: apps.open-cluster-management.io/v1
+    kind: PlacementRule
+    name: local-cluster
+    state: absent
+  tags: 
+    - uninstall 
+    - local-cluster
+- name: Remove ibm-common-services Application
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: app.k8s.io/v1beta1
+    kind: Application
+    name: ibm-common-services-deployment
+    state: absent
+  tags: uninstall 
+- name: Remove ibm-common-services Channel
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: apps.open-cluster-management.io/v1
+    kind: Channel
+    name: ibm-common-services-channel
+    state: absent
+  tags: uninstall 
+- name: Remove ibm-common-services namespace
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: v1
+    kind: Namespace
+    name: ibm-common-services
+    state: absent
+  tags: uninstall 
+- name: Remove PlacementRule placement-ibm-operator-catalog-enforce
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: apps.open-cluster-management.io/v1
+    kind: PlacementRule
+    name: placement-ibm-operator-catalog-enforce
+    namespace: acm-policies
+    state: absent
+  tags: uninstall 
+- name: Remove PlacementBinding binding-ibm-operator-catalog-enforce
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: policy.open-cluster-management.io/v1
+    kind: PlacementBinding
+    name: binding-ibm-operator-catalog-enforce
+    namespace: acm-policies
+    state: absent
+  tags: uninstall 
+- name: Remove ibm-operator-catalog-enforce Policy
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: policy.open-cluster-management.io/v1
+    kind: Policy
+    name: ibm-operator-catalog-enforce
+    namespace: acm-policies
+    state: absent
+  tags: uninstall 
+- name: Remove ibm-operator-catalog
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    api_version: operators.coreos.com/v1alpha1
+    kind: CatalogSource
+    name: ibm-operator-catalog
+    namespace: openshift-marketplace
+    state: absent
+  tags: uninstall 

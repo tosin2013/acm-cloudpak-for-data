@@ -1,0 +1,13 @@
+---
+- name: Create  ibm-common-services namespace
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    state: present
+    definition:
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+        name: ibm-common-services
+  tags: deploy 

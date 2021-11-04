@@ -1,0 +1,40 @@
+- hosts: localhost
+  vars:
+    openshift_url: https://api.tosins.sandbox986.opentlc.com:6443
+    admin_password: kubeadmin
+    k8s_admin_password: b6RhI-5IPcA-nm2Nr-zGrIi
+    k8s_validate_certs: false
+    cpdplatformoperatorCSV: cpd-platform-operator.v2.0.4
+    ibmcommonserviceoperatorCSV: ibm-common-service-operator.v3.12.1
+    ibmamespacescopeoperatorCSV: ibm-namespace-scope-operator.v1.6.0
+    operanddeploymentlifecyclemanagerCSV: operand-deployment-lifecycle-manager.v1.10.0
+  tasks:
+  - name: Log in (obtain access token)
+    k8s_auth:
+      host: "{{ openshift_url }}"
+      username: "{{ admin_password }}"
+      password: "{{ k8s_admin_password }}"
+      validate_certs: "{{ k8s_validate_certs }}"
+    register: k8s_auth_results
+    tags: always
+
+  - name: Configure ibm-common-services policies
+    import_tasks: deploy_ibm_common_services_policies.yaml
+    tags: deploy 
+
+  - name: Configure ibm-common-services
+    import_tasks: deploy_ibm_common_services.yaml
+    tags: deploy 
+
+  - name: Remove ibm-common-services
+    import_tasks: destory_ibm_common_services.yaml
+    tags: uninstall 
+
+  - name: If login succeeded, try to log out (revoke access token)
+    when: k8s_auth_results.k8s_auth.api_key is defined
+    k8s_auth:
+      state: absent
+      host: "{{ openshift_url }}"
+      validate_certs: "{{ k8s_validate_certs }}"
+      api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    tags: always
