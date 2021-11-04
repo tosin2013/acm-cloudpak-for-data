@@ -1,8 +1,8 @@
 - hosts: localhost
   vars:
-    openshift_url: https://api.tosins.sandbox986.opentlc.com:6443
+    openshift_url: https://api.ocp4.example.com:6443
     admin_password: kubeadmin
-    k8s_admin_password: b6RhI-5IPcA-nm2Nr-zGrIi
+    k8s_admin_password: changeme # Change to vault
     k8s_validate_certs: false
     cpdplatformoperatorCSV: cpd-platform-operator.v2.0.4
     ibmcommonserviceoperatorCSV: ibm-common-service-operator.v3.12.1
