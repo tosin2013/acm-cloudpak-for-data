@@ -21,13 +21,18 @@ oc login --token=sha256~XXXXX--server=https://api.ocp4.example.com:6443
 **Configure pull secret for cloudpak for data**
 [Configure pull secret for cloudpak for data](configure-pullsecret.md)
 
-**Configure ACM polices for cloud pack for data**
+
+## Quick Deploy 
+
+**Deploy IBM Services**
 ```
-oc  create -f acm-policies/00_namespace.yaml
+scripts/configure-ibm-common-services.sh
 ```
 
-**Deploy ibm-operator-catalog operator**
-> This policy will apply to all clusters with the vendor=OpenShift label to change this update lines 68 and 71.
+**Deploy cpd isntance**
+``` 
+scripts/configure-cpd-instance-services.sh
 ```
-oc  create -f acm-policies/01_ibm_operator_catalog_must_exists.yaml
-```
+
+## Deploy with Ansible 
+[Ansible Tower Deployment](ansible/README.md)
