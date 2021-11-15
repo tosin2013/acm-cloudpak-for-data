@@ -1,13 +1,93 @@
 ---
-- name: Create  ibm-common-services namespace
+- name: Create cpd-instance namespace
   community.kubernetes.k8s:
     host: "{{ openshift_url }}"
     api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
     validate_certs: "{{ k8s_validate_certs }}"
     state: present
     definition:
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-        name: ibm-common-services
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name:  cpd-instance
   tags: deploy 
+- name: Create channel for  cpd-instance
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    state: present
+    definition:
+      apiVersion: apps.open-cluster-management.io/v1
+      kind: Channel
+      metadata:
+        name: cpd-instance-channel
+        namespace: cpd-instance
+      spec:
+        pathname: 'https://github.com/tosin2013/acm-cloudpak-for-data.git'
+        type: GitHub
+  tags: deploy 
+- name: Create Application for  cpd-instance
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    state: present
+    definition:
+      apiVersion: app.k8s.io/v1beta1
+      kind: Application
+      metadata:
+        name: cpd-instance-deployment
+        namespace: cpd-instance
+      spec:
+        selector:
+          matchExpressions:
+            - key: deployment  
+              operator: In
+              values:
+              - cpd-instance-deployment
+        componentKinds:
+        - group: app.ibm.com/v1alpha1
+          kind: Subscription
+  tags: deploy 
+- name: Create PlacementRule for cpd-instance
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    state: present
+    definition:
+      apiVersion: apps.open-cluster-management.io/v1
+      kind: PlacementRule
+      metadata:
+        name: local-cluster
+        namespace: cpd-instance
+      spec:
+        clusterSelector:
+          matchLabels:
+            name: local-cluster
+  tags: local-cluster 
+- name: Create Subscription for cpd-instance
+  community.kubernetes.k8s:
+    host: "{{ openshift_url }}"
+    api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+    validate_certs: "{{ k8s_validate_certs }}"
+    state: present
+    definition:
+      apiVersion: apps.open-cluster-management.io/v1
+      kind: Subscription
+      metadata:
+        name: cpd-instance-local-cluster-sub
+        namespace: cpd-instance
+        labels:
+          deployment: cpd-instance-deployment
+        annotations:
+          apps.open-cluster-management.io/github-branch: main
+          apps.open-cluster-management.io/github-path: clusters/local-cluster/cpd-instance
+      spec:
+        channel: cpd-instance/cpd-instance-channel
+        placement: 
+          placementRef: 
+            kind: PlacementRule
+            name: local-cluster
+  tags: local-cluster

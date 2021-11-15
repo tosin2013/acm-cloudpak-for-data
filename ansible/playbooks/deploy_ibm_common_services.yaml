@@ -95,34 +95,32 @@
   kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
     host: "{{ openshift_url }}"
+    wait: yes
     api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
     validate_certs: "{{ k8s_validate_certs }}"
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
-    field_selectors:
-      - metadata.name={{ cpdplatformoperatorCSV }}
-  register: r_data_crd
-  retries: 20
-  delay: 120
-  until: r_data_crd.resources is defined
+    name: "{{ cpdplatformoperatorCSV }}"
+    wait_sleep: 10
+    wait_timeout: 60
   tags: 
-    - local-cluster 
+  - local-cluster 
 - name: Wait for Cloud Pak for Data Platform Operator CRD to be ready
   kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
     host: "{{ openshift_url }}"
+    wait: yes
     api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
     validate_certs: "{{ k8s_validate_certs }}"
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
     field_selectors:
-      - metadata.name={{ cpdplatformoperatorCSV }}
-  register: r_data_crd
-  retries: 20
-  delay: 120
-  until: r_data_crd.resources | list | length == 1
+      - status.phase=Succeeded
   tags: 
-    - local-cluster 
+  - local-cluster 
+# Example showing how to end the play for specific targets
+#- name: End the play for hosts that run CentOS 6
+#  meta: end_host
 - name: Wait for IBM Cloud Pak foundational services  to be defined
   kubernetes.core.k8s_info:
     api_version: operators.coreos.com/v1alpha1
@@ -131,12 +129,8 @@
     validate_certs: "{{ k8s_validate_certs }}"
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
-    field_selectors:
-      - metadata.name={{ ibmcommonserviceoperatorCSV }}
-  register: r_foundation_crd
-  retries: 20
-  delay: 120
-  until: r_foundation_crd.resources is defined
+    wait: yes
+    name: "{{ ibmcommonserviceoperatorCSV }}"
   tags: 
     - local-cluster 
 - name: Wait for IBM Cloud Pak foundational services to be ready
@@ -147,12 +141,10 @@
     validate_certs: "{{ k8s_validate_certs }}"
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
+    wait: yes
+    name: "{{ ibmcommonserviceoperatorCSV }}"
     field_selectors:
-      - metadata.name={{ ibmcommonserviceoperatorCSV }}
-  register: r_foundation_crd
-  retries: 20
-  delay: 120
-  until: r_foundation_crd.resources | list | length == 1
+      - status.phase=Succeeded
   tags: 
     - local-cluster 
 - name: Wait for IBM NamespaceScope Operator to be defined
@@ -163,12 +155,8 @@
     api_version: operators.coreos.com/v1alpha1
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
-    field_selectors:
-      - metadata.name={{ ibmamespacescopeoperatorCSV }}
-  register: r_space_crd
-  retries: 20
-  delay: 120
-  until: r_space_crd.resources is defined
+    wait: yes
+    name: "{{ ibmamespacescopeoperatorCSV }}"
   tags: 
     - local-cluster 
 - name: Wait for IBM NamespaceScope Operator  to be ready
@@ -179,12 +167,10 @@
     api_version: operators.coreos.com/v1alpha1
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
+    wait: yes
+    name: "{{ ibmamespacescopeoperatorCSV }}"
     field_selectors:
-      - metadata.name={{ ibmamespacescopeoperatorCSV }}
-  register: r_space_crd
-  retries: 20
-  delay: 120
-  until: r_space_crd.resources | list | length == 1
+      - status.phase=Succeeded
   tags: 
     - local-cluster 
 - name: Wait for Operand Deployment Lifecycle Manager CRD to be defined
@@ -195,12 +181,7 @@
     api_version: operators.coreos.com/v1alpha1
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
-    field_selectors:
-      - metadata.name={{ operanddeploymentlifecyclemanagerCSV }}
-  register: r_life_crd
-  retries: 20
-  delay: 60
-  until: r_life_crd.resources is defined
+    name: "{{ operanddeploymentlifecyclemanagerCSV }}"
   tags: 
     - local-cluster
 - name: Wait for Operand Deployment Lifecycle Manager CRD to be ready
@@ -211,11 +192,8 @@
     api_version: operators.coreos.com/v1alpha1
     kind: ClusterServiceVersion
     namespace: "ibm-common-services"
+    name: "{{ operanddeploymentlifecyclemanagerCSV }}"
     field_selectors:
       - metadata.name={{ operanddeploymentlifecyclemanagerCSV }}
-  register: r_life_crd
-  retries: 20
-  delay: 60
-  until: r_life_crd.resources | list | length == 1
   tags: 
     - local-cluster
