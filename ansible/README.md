@@ -26,6 +26,6 @@ ansible-playbook ansible/playbooks/main.yaml -t uninstall -vv
 
 **Download Ansible tower Binaries for OpenShift Deployment**
 ```
-curl -OL ansible-tower-openshift-setup-latest.tar.gz
+curl -OL https://releases.ansible.com/ansible-tower/setup_openshift/ansible-tower-openshift-setup-latest.tar.gz
 ```
 
