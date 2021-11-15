@@ -18,8 +18,8 @@ git clone https://github.com/tosin2013/acm-cloudpak-for-data.git
 oc login --token=sha256~XXXXX--server=https://api.ocp4.example.com:6443
 ```
 
-**Configure pull secret for cloudpak for data**
-[Configure pull secret for cloudpak for data](configure-pullsecret.md)
+**Configure pull secret for cloudpak for data**  
+* [Configure pull secret for cloudpak for data](configure-pullsecret.md)
 
 
 ## Quick Deploy 
