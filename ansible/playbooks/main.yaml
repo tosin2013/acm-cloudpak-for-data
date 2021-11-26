@@ -8,6 +8,8 @@
     ibmcommonserviceoperatorCSV: ibm-common-service-operator.v3.13.0
     ibmamespacescopeoperatorCSV: ibm-namespace-scope-operator.v1.7.0
     operanddeploymentlifecyclemanagerCSV: operand-deployment-lifecycle-manager.v1.11.0
+  collections: 
+    - community.kubernetes
   tasks:
   - name: Log in (obtain access token)
     k8s_auth:
