@@ -1,4 +1,8 @@
 - hosts: localhost
+  gather_facts: false
+  connection: local
+  collections: 
+    - community.kubernetes
   vars:
     openshift_url: https://api.cluster-xxxx.xxxx.xxxxxxx.opentlc.com:6443
     admin_password: opentlc-mgr
