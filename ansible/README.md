@@ -3,6 +3,17 @@
 ## Requirements
 * ODF 
 * ACM
+* The following ansible galaxy packages
+```
+ansible-galaxy collection install community.kubernetes
+ansible-galaxy collection install kubernetes.core
+```
+* The following pip packages
+```
+pip3 install kubernetes
+pip3 install openshift
+```
+
 
 ### Deploy locally on laptop
 **Deploy ACM configration without local-cluster placement**
